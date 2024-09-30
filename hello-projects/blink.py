@@ -5,4 +5,4 @@ led_pin = machine.Pin("LED", machine.Pin.OUT)  # GPIO pin 25 controls the onboar
 
 while True:
     led_pin.toggle()  # Toggle the LED state
-    time.sleep(0.6)
+    time.sleep(1)
