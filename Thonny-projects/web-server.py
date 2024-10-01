@@ -1,23 +1,30 @@
-import machine
-import time
 import network
 import socket
+from time import sleep
+from picozero import pico_temp_sensor, pico_led
+import machine
 
-pico_led = machine.Pin("LED", machine.Pin.OUT)
+import os
+logfile = open('log.txt', 'a')
+# duplicate stdout and stderr to the log file
+os.dupterm(logfile)
 
 ssid = '******'
 password = '******'
-def connectToWifi():
+
+def connect():
     #Connect to WLAN
     wlan = network.WLAN(network.STA_IF)
+    wlan.config(pm=network.WLAN.PM_NONE)
     wlan.active(True)
     wlan.connect(ssid, password)
     while wlan.isconnected() == False:
         print('Waiting for connection...')
-        time.sleep(1)
+        sleep(1)
     ip = wlan.ifconfig()[0]
     print(f'Connected on {ip}')
     return ip
+
 
 def open_socket(ip):
     # Open a socket
@@ -54,9 +61,11 @@ def serve(connection):
         client = connection.accept()[0]
         request = client.recv(1024)
         request = str(request)
+        print(f'get a request: {request}')
         try:
             request = request.split()[1]
         except IndexError:
+            print(f'get a request: {IndexError}')
             pass
         if request == '/lighton?':
             pico_led.on()
@@ -64,14 +73,20 @@ def serve(connection):
         elif request =='/lightoff?':
             pico_led.off()
             state = 'OFF'
-        # temperature = pico_temp_sensor.temp
+        temperature = pico_temp_sensor.temp
         html = webpage(temperature, state)
         client.send(html)
         client.close()
 
 try:
-    ip = connectToWifi()
+    ip = connect()
     connection = open_socket(ip)
     serve(connection)
 except KeyboardInterrupt:
     machine.reset()
+    
+    
+    
+    
+    
+
