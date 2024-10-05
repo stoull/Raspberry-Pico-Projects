@@ -3,7 +3,6 @@ import time
 from machine import Pin
 import dht
 
-import time
 
 led_pin = machine.Pin("LED", machine.Pin.OUT)  # GPIO pin 25 controls the onboard LED
 dSensor = dht.DHT22(Pin(2))

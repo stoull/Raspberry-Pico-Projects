@@ -4,11 +4,6 @@ from time import sleep
 from picozero import pico_temp_sensor, pico_led
 import machine
 
-import os
-logfile = open('log.txt', 'a')
-# duplicate stdout and stderr to the log file
-os.dupterm(logfile)
-
 ssid = '******'
 password = '******'
 
