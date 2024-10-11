@@ -13,14 +13,14 @@ from machine import Pin
 from dht_sensor import readDHT
 led_pin = Pin("LED", Pin.OUT)
 
-wifi_ssid = "******"
+wifi_ssid = "****"
 wifi_password = "******"
 
 # 日志相关
 log_file = open("_log.txt", "w")
 
 # Fill in your Adafruit IO Authentication and Feed MQTT Topic details
-mqtt_host = "192.168.31.11"
+mqtt_host = "192.168.1.147"
 mqtt_port = 1883
 mqtt_publish_topic = "/fridge/temp-humidity"  # The MQTT topic for your Adafruit IO Feed
 
@@ -68,7 +68,7 @@ def startLooping():
                     "humidity": temp_hum[1],
                     }
                 info_s = json.dumps(info)
-                # print('"temperature":{} '.format(info_s))
+                print('"temperature":{} '.format(info_s))
                 log_file.flush()
                 mqtt_client.publish(mqtt_publish_topic, info_s)
             else:
